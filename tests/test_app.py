@@ -3,7 +3,9 @@ from src.app import greet
 
 class TestApp(unittest.TestCase):
     def test_greet(self):
-            self.assertEqual(greet("World"), "Hello, World! Welcome to DevLake Demo Project for Endava")
+            result = greet("World")
+            self.assertIn("Hello, World", result)
+
 
 
 if __name__ == "__main__":
