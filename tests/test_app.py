@@ -1,5 +1,5 @@
 import unittest
-from src.app import greet
+from src.app import greet, add
 
 class TestApp(unittest.TestCase):
     def test_greet(self):
@@ -7,7 +7,9 @@ class TestApp(unittest.TestCase):
             self.assertIn("Hello, World", result)
     
     def test_add(self):
-         self.assertEqual(add(2, 3), 5)
+            self.assertEqual(add(2, 3), 5)
+            self.assertEqual(add(-1, 1), 0)
+            self.assertEqual(add(0, 0), 0)
 
 
 
