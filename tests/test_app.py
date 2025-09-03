@@ -1,5 +1,8 @@
 import unittest
 from src.app import greet, add, multiply
+import logging
+import io
+from contextlib import redirect_stderr
 
 class TestApp(unittest.TestCase):
     def test_greet(self):
@@ -16,10 +19,14 @@ class TestApp(unittest.TestCase):
             greet("World", "fr"),
             "Bonjour, World ! Bienvenue au projet de démonstration DevLake pour Endava"
         )
-        self.assertEqual(
-            greet("World", "de"),
-            "Hello, World! Welcome to DevLake Demo Project for Endava"
-        )
+        # Test unsupported language with warning
+        with redirect_stderr(io.StringIO()) as stderr:
+            result = greet("World", "de")
+            self.assertEqual(
+                result,
+                "Hello, World! Welcome to DevLake Demo Project for Endava"
+            )
+            self.assertIn("Language 'de' not supported", stderr.getvalue())
 
     def test_add(self):
         """Test the add function with valid and invalid inputs."""
@@ -42,6 +49,10 @@ class TestApp(unittest.TestCase):
             multiply("2", 3)
         with self.assertRaises(ValueError):
             multiply(2, "3")
+        with self.assertRaises(ValueError):
+            multiply(None, 3)
+        with self.assertRaises(ValueError):
+            multiply(2, None)
 
 if __name__ == "__main__":
     unittest.main()
