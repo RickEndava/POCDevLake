@@ -19,14 +19,10 @@ class TestApp(unittest.TestCase):
             greet("World", "fr"),
             "Bonjour, World ! Bienvenue au projet de démonstration DevLake pour Endava"
         )
-        # Test unsupported language with warning
-        with redirect_stderr(io.StringIO()) as stderr:
-            result = greet("World", "de")
-            self.assertEqual(
-                result,
-                "Hello, World! Welcome to DevLake Demo Project for Endava"
-            )
-            self.assertIn("Language 'de' not supported", stderr.getvalue())
+        self.assertEqual(
+            greet("World", "de"),
+            "Hello, World! Welcome to DevLake Demo Project for Endava"
+        )
 
     def test_add(self):
         """Test the add function with valid and invalid inputs."""

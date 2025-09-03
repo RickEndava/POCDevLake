@@ -9,9 +9,7 @@ def greet(name, language="en"):
         "es": f"¡Hola, {name}! Bienvenido al Proyecto Demo de DevLake para Endava",
         "fr": f"Bonjour, {name} ! Bienvenue au projet de démonstration DevLake pour Endava"
     }
-    if language not in greetings:
-        logging.warning(f"Language '{language}' not supported, defaulting to English")
-    return greetings.get(language, greetings["en"])
+    return greetings.get(language, greetings["en"])  # Default to English if language not found
 
 def add(a, b):
     """Add two numbers and return the result."""
@@ -30,7 +28,6 @@ if __name__ == "__main__":
     print(greet("DevLake"))  # Default: English
     print(greet("DevLake", "es"))  # Spanish
     print(greet("DevLake", "fr"))  # French
-    print(greet("DevLake", "de"))  # Unsupported language
     
     # Test the add and multiply functions
     try:
