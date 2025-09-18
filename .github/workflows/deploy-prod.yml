@@ -1,0 +1,33 @@
+name: deploy-prod
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      fail:
+        description: "Force failure?"
+        type: choice
+        options: ["false", "true"]
+        default: "false"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "build ok"
+
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: simulate deploy
+        run: |
+          echo "deploying to prod..."
+          sleep 2
+      - name: maybe fail
+        if: ${{ inputs.fail == 'true' }}
+        run: exit 1
