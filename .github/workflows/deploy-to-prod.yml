@@ -1,19 +1,33 @@
-name: deploy-to-prod
+name: deploy-prod
 
 on:
-  workflow_run:
-    workflows: ["CI"]   # <-- aquí debe coincidir con el "name:" que tengas en ci.yml
-    types:
-      - completed
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      fail:
+        description: "Force failure?"
+        type: choice
+        options: ["false", "true"]
+        default: "false"
 
 jobs:
-  deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: echo "build ok"
 
-      - name: Deploy to production
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: simulate deploy
         run: |
-          echo "Deploying to PROD..."
-          date
+          echo "deploying to prod..."
+          sleep 2
+      - name: maybe fail
+        if: ${{ inputs.fail == 'true' }}
+        run: exit 1
